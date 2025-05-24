@@ -32,7 +32,7 @@ def preprocess_frame(frame):                                                    
 
 
 def extract_keypoints(model_output):                                            #extract Keypoints from Model Output
-    #extract 17 keypoints (x, y coordinates) from model result
+    #extract 17 keypoints (x, y) from model result
     #ignore confidence scores for now
     #return list of (x, y) pairs
     pass
