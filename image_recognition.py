@@ -18,7 +18,7 @@ tqdm==4.66.2
 
 
 def load_model():                                                               #load pretrained model
-    #load MoveNet (e.g., lightning) from TensorFlow Hub
+    #load MoveNet from TensorFlow Hub
     #return the model's callable inference signature
     pass
 
