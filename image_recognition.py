@@ -5,6 +5,7 @@ import tensorflow_hub                                                           
 import json                                                                     #for reading and writing pose keypoints to .json files
 import os                                                                       #tools for interacting with the file system
 
+
 """
 Requirements:
 tensorflow==2.15.0
@@ -16,104 +17,89 @@ tqdm==4.66.2
 """
 
 
-def record_reference_dance():
-    #load the pose estimation model from TensorFlow Hub
-    #open the webcam for live video input
-    #initialize an empty list to store keypoints for each frame
-
-    #while webcam is running:
-        #capture a frame from the webcam
-        #convert the frame from BGR to RGB color format
-        #preprocess the frame to the correct input shape for the model (192x192)
-        #run the pose estimation model on the processed frame
-        #extract the 17 (x, y) keypoints from the model output
-        #append this frame's keypoints to the reference list
-        #draw the keypoints onto the video frame for visual feedback
-        #overlay "Recording Reference" text onto the frame
-        #show the frame in a window
-        #if the user presses 'q', exit the loop
-
-    #save the list of keypoints to a JSON file for later use
-    #release the webcam
-    #close any OpenCV display windows
+def load_model():                                                               #load pretrained model
+    #load MoveNet (e.g., lightning) from TensorFlow Hub
+    #return the model's callable inference signature
     pass
 
 
-def perform_and_compare_to_reference():
-    #load the pose estimation model
-    #load the reference keypoint sequence from a saved JSON file
-    #open the webcam for real-time video input
-    #initialize a variable to track the current frame index
-
-    #while the webcam is running:
-        #capture a frame from the webcam
-        #convert the frame to RGB format
-        #preprocess the frame to fit the model's input requirements
-        #run the pose estimation model on the frame
-        #extract keypoints from the model output
-
-        #draw the detected keypoints on the frame
-
-        #if the frame index is within the reference sequence:
-            #load the reference keypoints for the current frame
-            #compare the live keypoints to the reference using a similarity metric
-            #display the similarity score on the video frame
-        #else:
-            #show a message that the reference sequence has ended
-
-        #show the current frame with overlays
-        #if the user presses 'q', exit the loop
-
-        #increment the frame index
-
-    #release the webcam
-    #close any OpenCV display windows
+def preprocess_frame(frame):                                                    #process frame for model
+    #resize frame to 192x192 with padding
+    #add batch dimension
+    #convert to int32 tensor
+    #return processed tensor
     pass
 
 
-def preprocess_frame(frame):
-    #resize the frame to 192x192 with padding to preserve aspect ratio
-    #expand the frame dimensions to include a batch axis
-    #convert the image to a tensor of integers
-    #return the processed tensor ready for the model
+def extract_keypoints(model_output):                                            #extract Keypoints from Model Output
+    #extract 17 keypoints (x, y coordinates) from model result
+    #ignore confidence scores for now
+    #return list of (x, y) pairs
     pass
 
 
-def extract_keypoints(model_output):
-    #get the output tensor from the model
-    #extract the first detection (single person)
-    #select only the (x, y) coordinates from each of the 17 keypoints
-    #return the list of (x, y) coordinates
+def extract_keypoints_from_video(video_path):                                   #run Pose Extraction on a Video
+    #load pose estimation model
+    #open video file using cv2.VideoCapture
+    #initialize empty list to store keypoints per frame
+
+    #while video is open:
+        #read next frame from video
+        #if no frame is returned, break loop
+        #convert frame to RGB
+        #preprocess frame
+        #run pose estimation model
+        #extract keypoints from result
+        #append keypoints to list
+
+    #release video file
+    #return full list of keypoints per frame
     pass
 
 
-def compute_similarity(kp1, kp2):
-    #flatten the 17 (x, y) pairs into 1D vectors
-    #if either vector has zero magnitude (invalid data), return similarity of 0
-    #use cosine similarity: dot product divided by the product of magnitudes
-    #return the similarity score (range 0–1)
+def save_keypoints_sequence(sequence, filename):                                #save Keypoints to JSON
+    #write the sequence of keypoints to a JSON file
     pass
 
 
-def save_keypoints_sequence(sequence, filename):
-    #open a file with the specified filename in write mode
-    #save the list of keypoints to the file in JSON format
+def load_keypoints_sequence(filename):                                          #load Keypoints from JSON
+    #read and return list of keypoints from JSON file
     pass
 
 
-def load_keypoints_sequence(filename):
-    #open the specified JSON file in read mode
-    #load and return the list of stored keypoints
+def compute_similarity(kp1, kp2):                                               #compute Cosine Similarity Between Two Frames
+    #flatten both sets of 17 (x, y) points into 1D vectors
+    #if either vector is invalid (all zeros), return similarity of 0
+    #compute cosine similarity between the vectors
+    #return similarity score between 0 and 1
     pass
 
 
-def summarize_performance(similarity_scores):
-    #check if similarity_scores list is not empty
-    #calculate the average similarity score across all frames
-    #optionally, calculate additional metrics (e.g., standard deviation)
-    #print or display the final performance score as a percentage
-    #optionally, display feedback message based on score (e.g., "Excellent", "Keep Practicing")
-    #optionally, plot a graph of similarity score per frame (using matplotlib)
+def compare_pose_sequences(ref_sequence, test_sequence):                        #compare Two Pose Sequences Frame-by-Frame
+    #initialize empty list for similarity scores
+    #determine the shorter sequence length
+
+    #for each frame index within the shorter length:
+        #retrieve reference and test frame keypoints
+        #compute similarity
+        #append score to list
+
+    #return full list of similarity scores
     pass
 
 
+def summarize_performance(similarity_scores):                                   #summarize and Visualize Results
+    #calculate average similarity across frames
+    #print or display overall score
+    #optionally, generate a plot of frame-by-frame similarity (e.g., matplotlib)
+    pass
+
+
+def main():
+    #define file paths for reference and test videos
+    #extract keypoints from both videos using extract_keypoints_from_video
+    #optional: Save extracted keypoints as JSON using save_keypoints_sequence
+    #optional: Load from existing JSONs using load_keypoints_sequence
+    #compare the two sequences using compare_pose_sequences
+    #pass similarity scores to summarize_performance
+    pass
